@@ -10,7 +10,7 @@
       height: 100%;
       overflow: hidden;
       font-family: sans-serif;
-      background: url('bg.jpg') no-repeat center center;
+      background: url('images/bg.jpg') no-repeat center center;
       background-size: cover;
       position: relative;
     }
@@ -83,7 +83,7 @@
   <div id="progress">移除垃圾：0 / 10</div>
   <div id="instruction">點擊海龜周圍的垃圾，集滿即為挑戰成功喔！</div>
 
-  <img id="turtle" src="海龜.jpg" alt="海龜">
+  <img id="turtle" src="images/海龜.jpg" alt="海龜">
 
   <div id="messageBox">
     感謝你幫助海龜，恭喜你成為海洋守護者！
@@ -95,7 +95,7 @@
 
     function createTrash() {
       const trash = document.createElement('img');
-      trash.src = '垃圾.png';
+      trash.src = 'images/垃圾.png';
       trash.className = 'trash';
       // 生成相對海龜位置的範圍
       const top = 40 + Math.random() * 20;

@@ -12,7 +12,7 @@
       font-family: sans-serif;
     }
     body {
-      background: url('bg.jpg') no-repeat center center;
+      background: url('images/bg.jpg') no-repeat center center;
       background-size: cover;
       position: relative;
     }
@@ -115,9 +115,9 @@
 
   <script>
     const animals = [
-      {img: '海螺.png', count: 5},
-      {img: '小丑魚.png', count: 5},
-      {img: '鯨魚.png', count: 5}
+      {img: 'images/海螺.png', count: 5},
+      {img: 'images/小丑魚.png', count: 5},
+      {img: 'images/鯨魚.png', count: 5}
     ];
     const trashCount = 10;
     const animalQuestions = [
@@ -183,7 +183,7 @@
       });
       for (let i = 0; i < trashCount; i++) {
         const pos = randomPos(50, window.innerWidth - 100, 100, window.innerHeight - 150);
-        createItem('垃圾.png', pos.x, pos.y, false);
+        createItem('images/垃圾.png', pos.x, pos.y, false);
       }
     };
   </script>
