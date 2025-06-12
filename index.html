@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>SDGs 性別平權</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20211217/pngtree-exquisite-cartoon-river-banner-background-material-image_923261.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      height: 100vh;
+      color: #fff;
+      position: relative;
+    }
+    #title {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+    #score {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 18px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+    #intro {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    #question-box, #result-box {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 400px;
+    }
+    .btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body onclick="startGame()">
+  <div id="title">SDGs 性別平權</div>
+  <div id="score">答對題數：0</div>
+  <div id="intro">點選畫面中的任何一處都可能有問題出現喔</div>
+
+  <div id="question-box">
+    <div id="question-text"></div>
+    <div id="options"></div>
+  </div>
+
+  <div id="result-box">
+    <div id="result-message"></div>
+    <button id="retry-btn" class="btn" onclick="location.reload()">重新挑戰</button>
+    <button id="next-btn" class="btn" onclick="window.location.href='level2.html'">前往下一關</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "哪一項行為有助於保護海洋生態？",
+        options: ["亂丟垃圾", "使用塑膠吸管", "參與海灘清潔活動", "隨意捕魚"],
+        answer: 2
+      },
+      {
+        q: "SDGs 第14項目標是什麼？",
+        options: ["保育海洋生態", "性別平等", "消除飢餓", "健康與福祉"],
+        answer: 0
+      },
+      {
+        q: "塑膠垃圾對海洋生物的影響是？",
+        options: ["無害", "提供食物", "可能導致死亡", "加速生長"],
+        answer: 2
+      },
+      {
+        q: "珊瑚白化主要原因是？",
+        options: ["氣候變遷", "過度捕魚", "海水變藍", "增加水族館"],
+        answer: 0
+      },
+      {
+        q: "海龜經常誤食什麼？",
+        options: ["水母", "塑膠袋", "珊瑚", "魚網"],
+        answer: 1
+      },
+      {
+        q: "我們應該如何選擇海鮮？",
+        options: ["只吃便宜的魚", "食用保育類物種", "選擇永續來源", "大量購買"],
+        answer: 2
+      },
+      {
+        q: "哪種能源對海洋影響最小？",
+        options: ["燃煤發電", "太陽能", "石油開採", "核能"],
+        answer: 1
+      },
+      {
+        q: "SDGs 是什麼的縮寫？",
+        options: ["永續發展目標", "學生發展指南", "世界衛生組織", "環境污染報告"],
+        answer: 0
+      },
+      {
+        q: "哪個不是海洋汙染源？",
+        options: ["塑膠垃圾", "石油外洩", "雨水", "工業廢水"],
+        answer: 2
+      },
+      {
+        q: "保護海洋行動之一是？",
+        options: ["用肥皂洗海灘", "支持環保團體", "多開車", "餵魚垃圾"],
+        answer: 1
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let gameStarted = false;
+
+    function startGame() {
+      if (!gameStarted) {
+        gameStarted = true;
+        document.getElementById("intro").style.display = "none";
+        showQuestion();
+      }
+    }
+
+    function showQuestion() {
+      if (current >= questions.length) {
+        showResult();
+        return;
+      }
+      document.getElementById("question-box").style.display = "block";
+      const q = questions[current];
+      document.getElementById("question-text").textContent = q.q;
+      const options = document.getElementById("options");
+      options.innerHTML = "";
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.className = "btn";
+        btn.onclick = () => {
+          if (i === q.answer) score++;
+          current++;
+          document.getElementById("score").textContent = `答對題數：${score}`;
+          showQuestion();
+        };
+        options.appendChild(btn);
+      });
+    }
+
+    function showResult() {
+      document.getElementById("question-box").style.display = "none";
+      const resultBox = document.getElementById("result-box");
+      const message = document.getElementById("result-message");
+      if (score >= 8) {
+        message.textContent = `恭喜你答對了 ${score} 題！你可以進入下一關！`;
+        document.getElementById("next-btn").style.display = "inline-block";
+        document.getElementById("retry-btn").style.display = "none";
+      } else {
+        message.textContent = `你只答對了 ${score} 題，請再挑戰一次！`;
+        document.getElementById("retry-btn").style.display = "inline-block";
+        document.getElementById("next-btn").style.display = "none";
+      }
+      resultBox.style.display = "block";
+    }
+  </script>
+</body>
+</html>
+
+
+
+

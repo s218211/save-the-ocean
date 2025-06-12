@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>SDGs 性別平權</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+    body {
+      background: url('bg.jpg') no-repeat center center;
+      background-size: cover;
+      position: relative;
+    }
+    #title {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      background: rgba(0,0,0,0.5);
+      padding: 10px;
+      border-radius: 8px;
+    }
+    #score {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 20px;
+      color: white;
+      background: rgba(0,0,0,0.5);
+      padding: 10px;
+      border-radius: 8px;
+    }
+    #instruction {
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      background: rgba(0,0,0,0.6);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+    .item {
+      position: absolute;
+      width: 80px;
+      cursor: pointer;
+    }
+    #questionBox {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      display: none;
+      z-index: 10;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    #questionBox button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+    }
+    #successBox {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 128, 0, 0.9);
+      color: white;
+      padding: 30px 40px;
+      font-size: 24px;
+      border-radius: 15px;
+      display: none;
+      z-index: 99;
+    }
+    #nextBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #fff;
+      color: #008000;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="title">SDGs 性別平權</div>
+  <div id="score">答對題數：0</div>
+  <div id="instruction">點選海洋生物並回答問題就可以得分喔，反之，點選垃圾就沒有分喔</div>
+
+  <div id="questionBox">
+    <p id="questionText"></p>
+    <button onclick="answerQuestion(true)">是</button>
+    <button onclick="answerQuestion(false)">否</button>
+  </div>
+
+  <div id="successBox">
+    <p>挑戰成功！你已答對 10 題！</p>
+    <button id="nextBtn" onclick="location.href='level3.html'">下一關</button>
+  </div>
+
+  <script>
+    const animals = [
+      {img: '海螺.png', count: 5},
+      {img: '小丑魚.png', count: 5},
+      {img: '鯨魚.png', count: 5}
+    ];
+    const trashCount = 10;
+    const animalQuestions = [
+      { q: '海洋污染會影響人類的食物鏈嗎？', a: true },
+      { q: '塑膠垃圾可以被魚類自然分解？', a: false },
+      { q: '保育海洋有助於氣候調節？', a: true },
+      { q: '海龜常常誤食塑膠袋是因為像水母？', a: true },
+      { q: '亂丟垃圾不會影響海洋生物？', a: false },
+      { q: '珊瑚白化是氣候變遷造成的嗎？', a: true },
+      { q: '使用吸管會對海洋造成傷害？', a: true },
+      { q: '過度捕撈對生態沒有影響？', a: false },
+      { q: '人類無法改變海洋污染的現況？', a: false },
+      { q: '清理海灘是保育海洋的一種方式？', a: true }
+    ];
+
+    let correct = 0;
+    let questionIndex = 0;
+
+    function createItem(src, x, y, isAnimal) {
+      const el = document.createElement('img');
+      el.src = src;
+      el.className = 'item';
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+      el.onclick = () => {
+        if (isAnimal) {
+          if (questionIndex >= animalQuestions.length) return;
+          document.getElementById('questionText').textContent = animalQuestions[questionIndex].q;
+          document.getElementById('questionBox').style.display = 'block';
+          el.remove();
+        } else {
+          el.remove();
+        }
+      };
+      document.body.appendChild(el);
+    }
+
+    function answerQuestion(ans) {
+      document.getElementById('questionBox').style.display = 'none';
+      if (ans === animalQuestions[questionIndex].a) {
+        correct++;
+        document.getElementById('score').textContent = '答對題數：' + correct;
+        if (correct >= 10) {
+          document.getElementById('successBox').style.display = 'block';
+        }
+      }
+      questionIndex++;
+    }
+
+    function randomPos(minX, maxX, minY, maxY) {
+      return {
+        x: Math.floor(Math.random() * (maxX - minX) + minX),
+        y: Math.floor(Math.random() * (maxY - minY) + minY)
+      };
+    }
+
+    window.onload = () => {
+      animals.forEach(animal => {
+        for (let i = 0; i < animal.count; i++) {
+          const pos = randomPos(50, window.innerWidth - 100, 100, window.innerHeight - 150);
+          createItem(animal.img, pos.x, pos.y, true);
+        }
+      });
+      for (let i = 0; i < trashCount; i++) {
+        const pos = randomPos(50, window.innerWidth - 100, 100, window.innerHeight - 150);
+        createItem('垃圾.png', pos.x, pos.y, false);
+      }
+    };
+  </script>
+</body>
+</html>

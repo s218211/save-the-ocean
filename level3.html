@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>第三關：解救海龜</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: sans-serif;
+      background: url('bg.jpg') no-repeat center center;
+      background-size: cover;
+      position: relative;
+    }
+    #title {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      background: rgba(0,0,0,0.5);
+      padding: 10px;
+      border-radius: 8px;
+      z-index: 10;
+    }
+    #progress {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 20px;
+      color: white;
+      background: rgba(0,0,0,0.5);
+      padding: 10px;
+      border-radius: 8px;
+      z-index: 10;
+    }
+    #instruction {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 18px;
+      background: rgba(255,255,255,0.8);
+      padding: 10px 20px;
+      border-radius: 10px;
+      z-index: 10;
+    }
+    #turtle {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 200px;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+    .trash {
+      position: absolute;
+      width: 40px;
+      cursor: pointer;
+      z-index: 2;
+    }
+    #messageBox {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 128, 0, 0.9);
+      color: white;
+      padding: 30px 40px;
+      font-size: 24px;
+      border-radius: 15px;
+      text-align: center;
+      display: none;
+      z-index: 99;
+    }
+  </style>
+</head>
+<body>
+  <div id="title">SDGs 性別平權</div>
+  <div id="progress">移除垃圾：0 / 10</div>
+  <div id="instruction">點擊海龜周圍的垃圾，集滿即為挑戰成功喔！</div>
+
+  <img id="turtle" src="海龜.jpg" alt="海龜">
+
+  <div id="messageBox">
+    感謝你幫助海龜，恭喜你成為海洋守護者！
+  </div>
+
+  <script>
+    let removedCount = 0;
+    const totalTrash = 10;
+
+    function createTrash() {
+      const trash = document.createElement('img');
+      trash.src = '垃圾.png';
+      trash.className = 'trash';
+      // 生成相對海龜位置的範圍
+      const top = 40 + Math.random() * 20;
+      const left = 35 + Math.random() * 30;
+      trash.style.top = `${top}%`;
+      trash.style.left = `${left}%`;
+
+      trash.onclick = () => {
+        trash.remove();
+        removedCount++;
+        document.getElementById('progress').textContent = `移除垃圾：${removedCount} / ${totalTrash}`;
+        if (removedCount === totalTrash) {
+          document.getElementById('messageBox').style.display = 'block';
+        }
+      };
+      document.body.appendChild(trash);
+    }
+
+    for (let i = 0; i < totalTrash; i++) {
+      createTrash();
+    }
+  </script>
+</body>
+</html>
+
+
